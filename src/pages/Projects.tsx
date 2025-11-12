@@ -168,7 +168,7 @@ const Projects = () => {
                 Sign in to submit your tech and cybersecurity projects to our community
               </p>
               <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
-                <Link to="/auth">Sign In to Submit</Link>
+                <Link to="/auth">Sign In to Submit Project</Link>
               </Button>
             </div>
           )}
