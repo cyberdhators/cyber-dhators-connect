@@ -9,7 +9,11 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About */}
           <div>
-            <img src={logo} alt="Cyber Dhators Logo" className="h-12 mb-4" />
+            <img
+              src={logo}
+              alt="Cyber Dhators Logo"
+              className="h-12 mb-4 border-2 border-transparent rounded-md hover:border-green-500 transition-all duration-200 inline-block"
+            />
             <p className="text-muted-foreground text-sm">
               Protecting Africa's Digital Future through innovative cybersecurity and technology solutions.
             </p>

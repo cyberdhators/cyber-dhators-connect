@@ -25,7 +25,11 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
-            <img src={logo} alt="Cyber Dhators" className="h-10 w-auto" />
+            <img
+              src={logo}
+              alt="Cyber Dhators"
+              className="h-10 w-auto border-2 border-transparent rounded-md hover:border-green-500 transition-all duration-200"
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -46,11 +50,9 @@ const Navigation = () => {
           </div>
 
           <div className="hidden md:flex items-center space-x-4">
-            <Button asChild variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
-              <Link to="/report-threat">
-                <Shield className="mr-2 h-4 w-4" />
-                Report Threat
-              </Link>
+            <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground" onClick={() => window.dispatchEvent(new Event('open-report-dialog'))}>
+              <Shield className="mr-2 h-4 w-4" />
+              Report Threat
             </Button>
           </div>
 
@@ -81,11 +83,9 @@ const Navigation = () => {
                   {link.name}
                 </Link>
               ))}
-              <Button asChild variant="outline" className="border-primary text-primary">
-                <Link to="/report-threat">
-                  <Shield className="mr-2 h-4 w-4" />
-                  Report Threat
-                </Link>
+              <Button variant="outline" className="border-primary text-primary" onClick={() => { setMobileMenuOpen(false); window.dispatchEvent(new Event('open-report-dialog')); }}>
+                <Shield className="mr-2 h-4 w-4" />
+                Report Threat
               </Button>
             </div>
           </div>

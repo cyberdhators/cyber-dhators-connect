@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,6 +32,15 @@ const ReportThreatButton = () => {
     setFormData({ email: "", threatType: "", description: "" });
     setOpen(false);
   };
+
+  // Allow opening the dialog from other parts of the app by dispatching
+  // a window event: window.dispatchEvent(new Event('open-report-dialog'))
+  // This lets the header button open the same dialog without adding a route.
+  useEffect(() => {
+    const handler = () => setOpen(true);
+    window.addEventListener("open-report-dialog", handler as EventListener);
+    return () => window.removeEventListener("open-report-dialog", handler as EventListener);
+  }, []);
 
   return (
     <>
