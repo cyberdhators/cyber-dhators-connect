@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/Navigation";
-import { Shield } from "lucide-react";
+import logo from "@/assets/cd-logo.png";
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -104,7 +104,7 @@ const Auth = () => {
       <div className="flex items-center justify-center min-h-screen px-4 pt-20">
         <div className="w-full max-w-md">
           <div className="flex justify-center mb-8">
-            <Shield className="h-16 w-16 text-primary animate-pulse-glow" />
+            <img src={logo} alt="Cyber Dhators Logo" className="h-20 animate-pulse-glow" />
           </div>
           
           <Tabs defaultValue="signin" className="w-full">

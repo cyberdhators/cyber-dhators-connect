@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Facebook, Twitter, Linkedin, Github, Mail } from "lucide-react";
+import logo from "@/assets/cd-logo.png";
 
 const Footer = () => {
   return (
@@ -8,7 +9,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About */}
           <div>
-            <h3 className="font-bold text-lg mb-4 text-primary">Cyber Dhators</h3>
+            <img src={logo} alt="Cyber Dhators Logo" className="h-12 mb-4" />
             <p className="text-muted-foreground text-sm">
               Protecting Africa's Digital Future through innovative cybersecurity and technology solutions.
             </p>
