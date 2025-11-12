@@ -116,6 +116,16 @@ const BlogPost = () => {
             {post.title}
           </h1>
 
+          {(post as any).featured_image_url && (
+            <div className="aspect-video overflow-hidden rounded-lg mb-8">
+              <img 
+                src={(post as any).featured_image_url} 
+                alt={post.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+
           <div className="flex items-center gap-6 text-muted-foreground mb-8 pb-8 border-b border-border">
             <div className="flex items-center gap-2">
               <User className="h-4 w-4" />

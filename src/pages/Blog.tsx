@@ -112,6 +112,15 @@ const Blog = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {posts.map((post) => (
                 <Card key={post.id} className="hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/10 group">
+                  {(post as any).featured_image_url && (
+                    <div className="aspect-video overflow-hidden rounded-t-lg">
+                      <img 
+                        src={(post as any).featured_image_url} 
+                        alt={post.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                      />
+                    </div>
+                  )}
                   <CardHeader>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
                       <span className="px-2 py-1 rounded bg-primary/10 text-primary">

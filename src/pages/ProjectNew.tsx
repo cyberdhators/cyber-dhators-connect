@@ -9,12 +9,14 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Upload, X } from "lucide-react";
 
 const ProjectNew = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [thumbnail, setThumbnail] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -23,6 +25,23 @@ const ProjectNew = () => {
     demo_url: "",
     thumbnail_url: "",
   });
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setThumbnail(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setThumbnail(null);
+    setImagePreview(null);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,11 +60,32 @@ const ProjectNew = () => {
         return;
       }
 
+      let thumbnailUrl = formData.thumbnail_url;
+
+      // Upload thumbnail if file is selected
+      if (thumbnail) {
+        const fileExt = thumbnail.name.split('.').pop();
+        const fileName = `${user.id}/${Date.now()}.${fileExt}`;
+        
+        const { error: uploadError } = await supabase.storage
+          .from('project-thumbnails')
+          .upload(fileName, thumbnail);
+
+        if (uploadError) throw uploadError;
+        
+        const { data: { publicUrl } } = supabase.storage
+          .from('project-thumbnails')
+          .getPublicUrl(fileName);
+        
+        thumbnailUrl = publicUrl;
+      }
+
       const { error } = await supabase
         .from("projects")
         .insert([
           {
             ...formData,
+            thumbnail_url: thumbnailUrl,
             user_id: user.id,
             approved: false,
           },
@@ -148,14 +188,51 @@ const ProjectNew = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="thumbnail_url">Thumbnail URL</Label>
-                  <Input
-                    id="thumbnail_url"
-                    type="url"
-                    value={formData.thumbnail_url}
-                    onChange={(e) => setFormData({ ...formData, thumbnail_url: e.target.value })}
-                    placeholder="https://example.com/image.png"
-                  />
+                  <Label>Project Thumbnail</Label>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Upload an image or provide a URL
+                  </p>
+                  {!imagePreview ? (
+                    <>
+                      <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-primary/50 transition-colors mb-2">
+                        <Upload className="h-8 w-8 text-muted-foreground mb-2" />
+                        <span className="text-sm text-muted-foreground">
+                          Click to upload thumbnail
+                        </span>
+                        <input
+                          type="file"
+                          className="hidden"
+                          accept="image/*"
+                          onChange={handleImageChange}
+                        />
+                      </label>
+                      <div className="text-center text-sm text-muted-foreground mb-2">or</div>
+                      <Input
+                        id="thumbnail_url"
+                        type="url"
+                        value={formData.thumbnail_url}
+                        onChange={(e) => setFormData({ ...formData, thumbnail_url: e.target.value })}
+                        placeholder="https://example.com/image.png"
+                      />
+                    </>
+                  ) : (
+                    <div className="relative">
+                      <img
+                        src={imagePreview}
+                        alt="Preview"
+                        className="w-full h-48 object-cover rounded-lg"
+                      />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="icon"
+                        className="absolute top-2 right-2"
+                        onClick={handleRemoveImage}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  )}
                 </div>
 
                 <div className="bg-muted p-4 rounded-lg">
