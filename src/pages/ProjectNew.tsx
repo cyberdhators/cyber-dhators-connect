@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -15,6 +15,7 @@ const ProjectNew = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [isChecking, setIsChecking] = useState(true);
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [formData, setFormData] = useState({
@@ -25,6 +26,38 @@ const ProjectNew = () => {
     demo_url: "",
     thumbnail_url: "",
   });
+
+  useEffect(() => {
+    const checkAdmin = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        navigate("/auth");
+        return;
+      }
+
+      const { data } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .eq('role', 'admin')
+        .single();
+
+      if (!data) {
+        toast({
+          title: "Access denied",
+          description: "Only admins can submit projects",
+          variant: "destructive",
+        });
+        navigate("/projects");
+        return;
+      }
+
+      setIsChecking(false);
+    };
+
+    checkAdmin();
+  }, [navigate, toast]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -109,6 +142,19 @@ const ProjectNew = () => {
       setIsLoading(false);
     }
   };
+
+  if (isChecking) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        <div className="pt-24 pb-20 px-4">
+          <div className="container mx-auto max-w-3xl text-center">
+            <p className="text-muted-foreground">Checking permissions...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">

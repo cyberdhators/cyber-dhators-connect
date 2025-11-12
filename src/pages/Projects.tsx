@@ -27,6 +27,7 @@ const Projects = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -37,6 +38,16 @@ const Projects = () => {
   const checkUser = async () => {
     const { data: { session } } = await supabase.auth.getSession();
     setUser(session?.user || null);
+    
+    if (session?.user) {
+      const { data } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', session.user.id)
+        .eq('role', 'admin')
+        .single();
+      setIsAdmin(!!data);
+    }
   };
 
   const fetchProjects = async () => {
@@ -49,7 +60,6 @@ const Projects = () => {
             full_name
           )
         `)
-        .eq("approved", true)
         .order("created_at", { ascending: false });
 
       if (error) throw error;
@@ -81,7 +91,7 @@ const Projects = () => {
                 Innovative tech and cybersecurity projects from our community
               </p>
             </div>
-            {user && (
+            {isAdmin && (
               <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
                 <Link to="/projects/new">
                   <Plus className="mr-2 h-4 w-4" />
@@ -98,15 +108,7 @@ const Projects = () => {
             </div>
           ) : projects.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-muted-foreground">No projects yet. Be the first to share yours!</p>
-              {user && (
-                <Button asChild className="mt-4 bg-primary text-primary-foreground hover:bg-primary/90">
-                  <Link to="/projects/new">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Submit First Project
-                  </Link>
-                </Button>
-              )}
+              <p className="text-muted-foreground">No projects yet.</p>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -161,17 +163,6 @@ const Projects = () => {
             </div>
           )}
 
-          {!user && (
-            <div className="mt-12 text-center bg-card border border-border rounded-xl p-8">
-              <h3 className="text-2xl font-bold mb-4">Want to Showcase Your Work?</h3>
-              <p className="text-muted-foreground mb-6">
-                Sign in to submit your tech and cybersecurity projects to our community
-              </p>
-              <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
-                <Link to="/auth">Sign In to Submit Project</Link>
-              </Button>
-            </div>
-          )}
         </div>
       </div>
 

@@ -26,6 +26,7 @@ const Blog = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -36,6 +37,16 @@ const Blog = () => {
   const checkUser = async () => {
     const { data: { session } } = await supabase.auth.getSession();
     setUser(session?.user || null);
+    
+    if (session?.user) {
+      const { data } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', session.user.id)
+        .eq('role', 'admin')
+        .single();
+      setIsAdmin(!!data);
+    }
   };
 
   const fetchPosts = async () => {
@@ -49,7 +60,6 @@ const Blog = () => {
             avatar_url
           )
         `)
-        .eq("published", true)
         .order("created_at", { ascending: false });
 
       if (error) throw error;
@@ -81,7 +91,7 @@ const Blog = () => {
                 Latest in cybersecurity and digital innovation
               </p>
             </div>
-            {user && (
+            {isAdmin && (
               <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
                 <Link to="/blog/new">
                   <Plus className="mr-2 h-4 w-4" />
@@ -98,15 +108,7 @@ const Blog = () => {
             </div>
           ) : posts.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-muted-foreground">No blog posts yet. Be the first to share!</p>
-              {user && (
-                <Button asChild className="mt-4 bg-primary text-primary-foreground hover:bg-primary/90">
-                  <Link to="/blog/new">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Create First Post
-                  </Link>
-                </Button>
-              )}
+              <p className="text-muted-foreground">No blog posts yet.</p>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -152,17 +154,6 @@ const Blog = () => {
             </div>
           )}
 
-          {!user && (
-            <div className="mt-12 text-center bg-card border border-border rounded-xl p-8">
-              <h3 className="text-2xl font-bold mb-4">Want to Share Your Knowledge?</h3>
-              <p className="text-muted-foreground mb-6">
-                Sign in to create and publish your own cybersecurity articles
-              </p>
-              <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
-                <Link to="/auth">Sign In to Post</Link>
-              </Button>
-            </div>
-          )}
         </div>
       </div>
 
