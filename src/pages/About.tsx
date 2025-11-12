@@ -63,9 +63,9 @@ const About = () => {
                     />
                   </div>
                   <h3 className="text-2xl font-bold mb-2">Monkonmlah Darlington Poure</h3>
-                  <p className="text-sm text-primary font-semibold mb-3">Co-Founder & CEO</p>
+                  <p className="text-sm text-primary font-semibold mb-3">Co-Founder</p>
                   <p className="text-muted-foreground leading-relaxed">
-                    A visionary tech leader passionate about cybersecurity and digital innovation. Dedicated to building secure technology solutions that empower African communities.
+                    Aspiring cybersecurity professional dedicated to building secure, innovative technologies that protect and empower digital communities. Passionate about driving digital trust and resilience in an increasingly connected world.
                   </p>
                 </div>
 
@@ -78,9 +78,9 @@ const About = () => {
                     />
                   </div>
                   <h3 className="text-2xl font-bold mb-2">Alieu S Keita</h3>
-                  <p className="text-sm text-secondary font-semibold mb-3">Co-Founder & CTO</p>
+                  <p className="text-sm text-secondary font-semibold mb-3">Co-Founder</p>
                   <p className="text-muted-foreground leading-relaxed">
-                    A skilled technologist with expertise in software development and system architecture. Committed to creating innovative products that solve real-world problems.
+                    A creative, purpose-driven individual passionate about building meaningful digital experiences and empowering communities through innovation. Dedicated to using technology, design, and collaboration to create lasting impact.
                   </p>
                 </div>
               </div>
