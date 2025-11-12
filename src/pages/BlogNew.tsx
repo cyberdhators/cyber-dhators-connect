@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ import { ArrowLeft, Upload, X } from "lucide-react";
 
 const BlogNew = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
@@ -45,7 +46,7 @@ const BlogNew = () => {
       if (!data) {
         toast({
           title: "Access denied",
-          description: "Only admins can create blog posts",
+          description: "Only admins can create/edit blog posts",
           variant: "destructive",
         });
         navigate("/blog");
@@ -57,6 +58,43 @@ const BlogNew = () => {
 
     checkAdmin();
   }, [navigate, toast]);
+
+  useEffect(() => {
+    if (id && !isChecking) {
+      fetchPost();
+    }
+  }, [id, isChecking]);
+
+  const fetchPost = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("blog_posts")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (error) throw error;
+      
+      setFormData({
+        title: data.title,
+        excerpt: data.excerpt || "",
+        content: data.content,
+        category: data.category || "",
+        published: data.published || false,
+      });
+      
+      if (data.featured_image_url) {
+        setImagePreview(data.featured_image_url);
+      }
+    } catch (error: any) {
+      toast({
+        title: "Error loading post",
+        description: error.message,
+        variant: "destructive",
+      });
+      navigate("/blog");
+    }
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -85,16 +123,16 @@ const BlogNew = () => {
       if (!user) {
         toast({
           title: "Authentication required",
-          description: "Please sign in to create a post",
+          description: "Please sign in",
           variant: "destructive",
         });
         navigate("/auth");
         return;
       }
 
-      let featuredImageUrl = null;
+      let featuredImageUrl = imagePreview;
 
-      // Upload featured image if selected
+      // Upload new featured image if selected
       if (featuredImage) {
         const fileExt = featuredImage.name.split('.').pop();
         const fileName = `${user.id}/${Date.now()}.${fileExt}`;
@@ -112,27 +150,46 @@ const BlogNew = () => {
         featuredImageUrl = publicUrl;
       }
 
-      const { error } = await supabase
-        .from("blog_posts")
-        .insert([
-          {
+      if (id) {
+        // Update existing post
+        const { error } = await supabase
+          .from("blog_posts")
+          .update({
             ...formData,
-            author_id: user.id,
             featured_image_url: featuredImageUrl,
-          },
-        ]);
+          })
+          .eq("id", id);
 
-      if (error) throw error;
+        if (error) throw error;
 
-      toast({
-        title: "Success!",
-        description: "Your blog post has been created",
-      });
+        toast({
+          title: "Success!",
+          description: "Blog post updated successfully",
+        });
+      } else {
+        // Create new post
+        const { error } = await supabase
+          .from("blog_posts")
+          .insert([
+            {
+              ...formData,
+              author_id: user.id,
+              featured_image_url: featuredImageUrl,
+            },
+          ]);
+
+        if (error) throw error;
+
+        toast({
+          title: "Success!",
+          description: "Your blog post has been created",
+        });
+      }
       
       navigate("/blog");
     } catch (error: any) {
       toast({
-        title: "Error creating post",
+        title: `Error ${id ? 'updating' : 'creating'} post`,
         description: error.message,
         variant: "destructive",
       });
@@ -171,7 +228,7 @@ const BlogNew = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-3xl">Create New Post</CardTitle>
+              <CardTitle className="text-3xl">{id ? 'Edit' : 'Create New'} Post</CardTitle>
               <CardDescription>Share your cybersecurity insights with the community</CardDescription>
             </CardHeader>
             <CardContent>
@@ -274,7 +331,7 @@ const BlogNew = () => {
                     disabled={isLoading}
                     className="bg-primary text-primary-foreground hover:bg-primary/90"
                   >
-                    {isLoading ? "Creating..." : "Create Post"}
+                    {isLoading ? (id ? "Updating..." : "Creating...") : (id ? "Update Post" : "Create Post")}
                   </Button>
                   <Button 
                     type="button" 

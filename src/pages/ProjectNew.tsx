@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ import { ArrowLeft, Upload, X } from "lucide-react";
 
 const ProjectNew = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
@@ -46,7 +47,7 @@ const ProjectNew = () => {
       if (!data) {
         toast({
           title: "Access denied",
-          description: "Only admins can submit projects",
+          description: "Only admins can create/edit projects",
           variant: "destructive",
         });
         navigate("/projects");
@@ -58,6 +59,44 @@ const ProjectNew = () => {
 
     checkAdmin();
   }, [navigate, toast]);
+
+  useEffect(() => {
+    if (id && !isChecking) {
+      fetchProject();
+    }
+  }, [id, isChecking]);
+
+  const fetchProject = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (error) throw error;
+      
+      setFormData({
+        title: data.title,
+        description: data.description,
+        category: data.category || "",
+        github_url: data.github_url || "",
+        demo_url: data.demo_url || "",
+        thumbnail_url: data.thumbnail_url || "",
+      });
+
+      if (data.thumbnail_url) {
+        setImagePreview(data.thumbnail_url);
+      }
+    } catch (error: any) {
+      toast({
+        title: "Error loading project",
+        description: error.message,
+        variant: "destructive",
+      });
+      navigate("/projects");
+    }
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -86,14 +125,14 @@ const ProjectNew = () => {
       if (!user) {
         toast({
           title: "Authentication required",
-          description: "Please sign in to submit a project",
+          description: "Please sign in",
           variant: "destructive",
         });
         navigate("/auth");
         return;
       }
 
-      let thumbnailUrl = formData.thumbnail_url;
+      let thumbnailUrl = imagePreview || formData.thumbnail_url;
 
       // Upload thumbnail if file is selected
       if (thumbnail) {
@@ -113,28 +152,47 @@ const ProjectNew = () => {
         thumbnailUrl = publicUrl;
       }
 
-      const { error } = await supabase
-        .from("projects")
-        .insert([
-          {
+      if (id) {
+        // Update existing project
+        const { error } = await supabase
+          .from("projects")
+          .update({
             ...formData,
             thumbnail_url: thumbnailUrl,
-            user_id: user.id,
-            approved: false,
-          },
-        ]);
+          })
+          .eq("id", id);
 
-      if (error) throw error;
+        if (error) throw error;
 
-      toast({
-        title: "Success!",
-        description: "Your project has been submitted for review",
-      });
+        toast({
+          title: "Success!",
+          description: "Project updated successfully",
+        });
+      } else {
+        // Create new project
+        const { error } = await supabase
+          .from("projects")
+          .insert([
+            {
+              ...formData,
+              thumbnail_url: thumbnailUrl,
+              user_id: user.id,
+              approved: false,
+            },
+          ]);
+
+        if (error) throw error;
+
+        toast({
+          title: "Success!",
+          description: "Your project has been submitted",
+        });
+      }
       
       navigate("/projects");
     } catch (error: any) {
       toast({
-        title: "Error submitting project",
+        title: `Error ${id ? 'updating' : 'submitting'} project`,
         description: error.message,
         variant: "destructive",
       });
@@ -173,7 +231,7 @@ const ProjectNew = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-3xl">Submit Your Project</CardTitle>
+              <CardTitle className="text-3xl">{id ? 'Edit' : 'Submit Your'} Project</CardTitle>
               <CardDescription>Share your cybersecurity project with the community</CardDescription>
             </CardHeader>
             <CardContent>
@@ -281,11 +339,13 @@ const ProjectNew = () => {
                   )}
                 </div>
 
-                <div className="bg-muted p-4 rounded-lg">
-                  <p className="text-sm text-muted-foreground">
-                    <strong>Note:</strong> Your project will be reviewed before appearing publicly on the site.
-                  </p>
-                </div>
+                {!id && (
+                  <div className="bg-muted p-4 rounded-lg">
+                    <p className="text-sm text-muted-foreground">
+                      <strong>Note:</strong> Your project will be reviewed before appearing publicly on the site.
+                    </p>
+                  </div>
+                )}
 
                 <div className="flex gap-4">
                   <Button 
@@ -293,7 +353,7 @@ const ProjectNew = () => {
                     disabled={isLoading}
                     className="bg-primary text-primary-foreground hover:bg-primary/90"
                   >
-                    {isLoading ? "Submitting..." : "Submit Project"}
+                    {isLoading ? (id ? "Updating..." : "Submitting...") : (id ? "Update Project" : "Submit Project")}
                   </Button>
                   <Button 
                     type="button" 

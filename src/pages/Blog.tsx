@@ -5,8 +5,19 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
-import { Calendar, User, Edit, Plus } from "lucide-react";
+import { Calendar, User, Edit, Plus, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface BlogPost {
   id: string;
@@ -75,6 +86,33 @@ const Blog = () => {
     }
   };
 
+  const handleDelete = async (postId: string) => {
+    try {
+      const { error } = await supabase
+        .from("blog_posts")
+        .delete()
+        .eq("id", postId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Blog post deleted successfully",
+      });
+      fetchPosts();
+    } catch (error: any) {
+      toast({
+        title: "Error deleting post",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const canEditPost = (post: BlogPost) => {
+    return user && (isAdmin || post.author_id === user.id);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -135,7 +173,7 @@ const Blog = () => {
                     <CardDescription>{post.excerpt}</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex items-center justify-between text-sm text-muted-foreground">
+                    <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
                       <div className="flex items-center gap-2">
                         <User className="h-4 w-4" />
                         <span>{post.profiles?.full_name || "Anonymous"}</span>
@@ -145,9 +183,43 @@ const Blog = () => {
                         <span>{new Date(post.created_at).toLocaleDateString()}</span>
                       </div>
                     </div>
-                    <Button asChild variant="outline" className="w-full mt-4 border-primary text-primary hover:bg-primary hover:text-primary-foreground">
-                      <Link to={`/blog/${post.id}`}>Read More</Link>
-                    </Button>
+                    
+                    {canEditPost(post) ? (
+                      <div className="flex gap-2">
+                        <Button asChild variant="outline" size="sm" className="flex-1">
+                          <Link to={`/blog/edit/${post.id}`}>
+                            <Edit className="mr-2 h-4 w-4" />
+                            Edit
+                          </Link>
+                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="destructive" size="sm" className="flex-1">
+                              <Trash2 className="mr-2 h-4 w-4" />
+                              Delete
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Delete Blog Post?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This action cannot be undone. This will permanently delete the blog post.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction onClick={() => handleDelete(post.id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    ) : (
+                      <Button asChild variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+                        <Link to={`/blog/${post.id}`}>Read More</Link>
+                      </Button>
+                    )}
                   </CardContent>
                 </Card>
               ))}

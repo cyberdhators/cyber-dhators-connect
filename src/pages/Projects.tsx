@@ -5,8 +5,19 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
-import { Github, ExternalLink, Plus, User } from "lucide-react";
+import { Github, ExternalLink, Plus, User, Edit, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface Project {
   id: string;
@@ -75,6 +86,33 @@ const Projects = () => {
     }
   };
 
+  const handleDelete = async (projectId: string) => {
+    try {
+      const { error } = await supabase
+        .from("projects")
+        .delete()
+        .eq("id", projectId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Project deleted successfully",
+      });
+      fetchProjects();
+    } catch (error: any) {
+      toast({
+        title: "Error deleting project",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const canEditProject = (project: Project) => {
+    return user && (isAdmin || project.user_id === user.id);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -139,24 +177,78 @@ const Projects = () => {
                       <User className="h-4 w-4" />
                       <span>{project.profiles?.full_name || "Anonymous"}</span>
                     </div>
-                    <div className="flex gap-2">
-                      {project.github_url && (
-                        <Button asChild variant="outline" size="sm" className="flex-1">
-                          <a href={project.github_url} target="_blank" rel="noopener noreferrer">
-                            <Github className="mr-2 h-4 w-4" />
-                            Code
-                          </a>
-                        </Button>
-                      )}
-                      {project.demo_url && (
-                        <Button asChild size="sm" className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90">
-                          <a href={project.demo_url} target="_blank" rel="noopener noreferrer">
-                            <ExternalLink className="mr-2 h-4 w-4" />
-                            Demo
-                          </a>
-                        </Button>
-                      )}
-                    </div>
+                    
+                    {canEditProject(project) ? (
+                      <>
+                        <div className="flex gap-2 mb-2">
+                          {project.github_url && (
+                            <Button asChild variant="outline" size="sm" className="flex-1">
+                              <a href={project.github_url} target="_blank" rel="noopener noreferrer">
+                                <Github className="mr-2 h-4 w-4" />
+                                Code
+                              </a>
+                            </Button>
+                          )}
+                          {project.demo_url && (
+                            <Button asChild size="sm" className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90">
+                              <a href={project.demo_url} target="_blank" rel="noopener noreferrer">
+                                <ExternalLink className="mr-2 h-4 w-4" />
+                                Demo
+                              </a>
+                            </Button>
+                          )}
+                        </div>
+                        <div className="flex gap-2">
+                          <Button asChild variant="outline" size="sm" className="flex-1">
+                            <Link to={`/projects/edit/${project.id}`}>
+                              <Edit className="mr-2 h-4 w-4" />
+                              Edit
+                            </Link>
+                          </Button>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button variant="destructive" size="sm" className="flex-1">
+                                <Trash2 className="mr-2 h-4 w-4" />
+                                Delete
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Delete Project?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  This action cannot be undone. This will permanently delete the project.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => handleDelete(project.id)} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                                  Delete
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="flex gap-2">
+                        {project.github_url && (
+                          <Button asChild variant="outline" size="sm" className="flex-1">
+                            <a href={project.github_url} target="_blank" rel="noopener noreferrer">
+                              <Github className="mr-2 h-4 w-4" />
+                              Code
+                            </a>
+                          </Button>
+                        )}
+                        {project.demo_url && (
+                          <Button asChild size="sm" className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90">
+                            <a href={project.demo_url} target="_blank" rel="noopener noreferrer">
+                              <ExternalLink className="mr-2 h-4 w-4" />
+                              Demo
+                            </a>
+                          </Button>
+                        )}
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               ))}
