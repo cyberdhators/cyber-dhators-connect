@@ -46,9 +46,38 @@ const About = () => {
           <section className="mb-20">
             <div className="bg-card border border-border rounded-xl p-8 md:p-12">
               <h2 className="text-3xl font-bold mb-6 text-primary">Who We Are</h2>
-              <p className="text-lg text-muted-foreground leading-relaxed">
+              <p className="text-lg text-muted-foreground leading-relaxed mb-12">
                 Cyber Dhators is a Liberian-based technology organization founded by <span className="text-foreground font-semibold">Monkonmlah Darlington Poure</span> and <span className="text-foreground font-semibold">Alieu S Keita</span>. Our mission is to design and deliver innovative tech products and services that address real-world challenges, empower communities, and shape the future of digital innovation across Africa.
               </p>
+              
+              {/* Founders */}
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="bg-gradient-to-br from-primary/5 to-background border border-primary/20 rounded-xl p-8 text-center hover:border-primary/40 transition-all">
+                  <div className="flex justify-center mb-4">
+                    <div className="h-32 w-32 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 border-2 border-primary/30 flex items-center justify-center text-4xl font-bold text-primary">
+                      MP
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold mb-2">Monkonmlah Darlington Poure</h3>
+                  <p className="text-sm text-primary font-semibold mb-3">Co-Founder & CEO</p>
+                  <p className="text-muted-foreground leading-relaxed">
+                    A visionary tech leader passionate about cybersecurity and digital innovation. Dedicated to building secure technology solutions that empower African communities.
+                  </p>
+                </div>
+
+                <div className="bg-gradient-to-br from-secondary/5 to-background border border-secondary/20 rounded-xl p-8 text-center hover:border-secondary/40 transition-all">
+                  <div className="flex justify-center mb-4">
+                    <div className="h-32 w-32 rounded-full bg-gradient-to-br from-secondary/20 to-secondary/5 border-2 border-secondary/30 flex items-center justify-center text-4xl font-bold text-secondary">
+                      AK
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold mb-2">Alieu S Keita</h3>
+                  <p className="text-sm text-secondary font-semibold mb-3">Co-Founder & CTO</p>
+                  <p className="text-muted-foreground leading-relaxed">
+                    A skilled technologist with expertise in software development and system architecture. Committed to creating innovative products that solve real-world problems.
+                  </p>
+                </div>
+              </div>
             </div>
           </section>
 
