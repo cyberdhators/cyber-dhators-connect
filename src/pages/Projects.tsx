@@ -45,7 +45,7 @@ const Projects = () => {
         .from("projects")
         .select(`
           *,
-          profiles!projects_user_id_fkey (
+          profiles (
             full_name
           )
         `)

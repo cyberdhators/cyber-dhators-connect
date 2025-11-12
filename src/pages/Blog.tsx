@@ -44,7 +44,7 @@ const Blog = () => {
         .from("blog_posts")
         .select(`
           *,
-          profiles!blog_posts_author_id_fkey (
+          profiles (
             full_name,
             avatar_url
           )

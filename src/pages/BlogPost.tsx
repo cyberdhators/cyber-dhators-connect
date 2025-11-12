@@ -44,7 +44,7 @@ const BlogPost = () => {
           )
         `)
         .eq("id", id)
-        .single();
+        .maybeSingle();
 
       if (error) throw error;
       setPost(data as any);
