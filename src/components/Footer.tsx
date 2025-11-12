@@ -54,9 +54,9 @@ const Footer = () => {
                 <Github size={20} />
               </a>
             </div>
-            <a href="mailto:contact@cyberdhators.com" className="flex items-center text-muted-foreground hover:text-primary transition-colors text-sm">
+            <a href="mailto:cyberdhators@gmail.com" className="flex items-center text-muted-foreground hover:text-primary transition-colors text-sm">
               <Mail size={16} className="mr-2" />
-              contact@cyberdhators.com
+              cyberdhators@gmail.com
             </a>
           </div>
         </div>

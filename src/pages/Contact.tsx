@@ -20,16 +20,32 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    try {
+      const res = await fetch("/api/send-contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData })
+      });
 
-    // Simulate form submission
-    setTimeout(() => {
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err?.message || "Failed to send message");
+      }
+
       toast({
         title: "Message Sent!",
         description: "We'll get back to you as soon as possible.",
       });
       setFormData({ name: "", email: "", subject: "", message: "" });
+    } catch (error: any) {
+      toast({
+        title: "Send failed",
+        description: error?.message || "An error occurred while sending your message.",
+        variant: "destructive"
+      });
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -139,8 +155,8 @@ const Contact = () => {
                     <Mail className="h-6 w-6 text-primary mr-4 mt-1" />
                     <div>
                       <h3 className="font-semibold mb-1">Email</h3>
-                      <a href="mailto:contact@cyberdhators.com" className="text-muted-foreground hover:text-primary transition-colors">
-                        contact@cyberdhators.com
+                      <a href="mailto:cyberdhators@gmail.com" className="text-muted-foreground hover:text-primary transition-colors">
+                        cyberdhators@gmail.com
                       </a>
                     </div>
                   </div>
