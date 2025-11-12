@@ -1,6 +1,8 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Shield, Target, Heart, Lock } from "lucide-react";
+import monkonmlahImage from "@/assets/monkonmlah-poure.png";
+import alieuImage from "@/assets/alieu-keita.png";
 
 const About = () => {
   const values = [
@@ -54,9 +56,11 @@ const About = () => {
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="bg-gradient-to-br from-primary/5 to-background border border-primary/20 rounded-xl p-8 text-center hover:border-primary/40 transition-all">
                   <div className="flex justify-center mb-4">
-                    <div className="h-32 w-32 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 border-2 border-primary/30 flex items-center justify-center text-4xl font-bold text-primary">
-                      MP
-                    </div>
+                    <img 
+                      src={monkonmlahImage} 
+                      alt="Monkonmlah Darlington Poure" 
+                      className="h-32 w-32 rounded-full object-cover border-2 border-primary/30 shadow-lg"
+                    />
                   </div>
                   <h3 className="text-2xl font-bold mb-2">Monkonmlah Darlington Poure</h3>
                   <p className="text-sm text-primary font-semibold mb-3">Co-Founder & CEO</p>
@@ -67,9 +71,11 @@ const About = () => {
 
                 <div className="bg-gradient-to-br from-secondary/5 to-background border border-secondary/20 rounded-xl p-8 text-center hover:border-secondary/40 transition-all">
                   <div className="flex justify-center mb-4">
-                    <div className="h-32 w-32 rounded-full bg-gradient-to-br from-secondary/20 to-secondary/5 border-2 border-secondary/30 flex items-center justify-center text-4xl font-bold text-secondary">
-                      AK
-                    </div>
+                    <img 
+                      src={alieuImage} 
+                      alt="Alieu S Keita" 
+                      className="h-32 w-32 rounded-full object-cover border-2 border-secondary/30 shadow-lg"
+                    />
                   </div>
                   <h3 className="text-2xl font-bold mb-2">Alieu S Keita</h3>
                   <p className="text-sm text-secondary font-semibold mb-3">Co-Founder & CTO</p>
