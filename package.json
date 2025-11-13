@@ -10,9 +10,6 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
-  "bin": {
-    "create-bing-key": "scripts/create-bing-key.js"
-  },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "^1.2.11",
