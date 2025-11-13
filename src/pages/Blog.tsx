@@ -175,10 +175,6 @@ const Blog = () => {
                   <CardContent>
                     <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
                       <div className="flex items-center gap-2">
-                        <User className="h-4 w-4" />
-                        <span>{post.profiles?.full_name || "Anonymous"}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4" />
                         <span>{new Date(post.created_at).toLocaleDateString()}</span>
                       </div>

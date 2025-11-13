@@ -218,7 +218,7 @@ const BlogPost = () => {
           <div className="flex items-center gap-6 text-muted-foreground mb-8 pb-8 border-b border-border">
             <div className="flex items-center gap-2">
               <User className="h-4 w-4" />
-              <span>{post.profiles?.full_name || "Anonymous"}</span>
+              <span>Cyberdhators</span>
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />

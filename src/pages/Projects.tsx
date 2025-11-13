@@ -173,10 +173,6 @@ const Projects = () => {
                     <CardDescription>{project.description}</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-                      <User className="h-4 w-4" />
-                      <span>{project.profiles?.full_name || "Anonymous"}</span>
-                    </div>
                     
                     {canEditProject(project) ? (
                       <>
