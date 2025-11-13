@@ -1,4 +1,4 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
+0import type { VercelRequest, VercelResponse } from '@vercel/node';
 import sgMail from '@sendgrid/mail';
 
 // NOTE: This file is a Vercel serverless function example.
