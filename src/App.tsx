@@ -14,6 +14,7 @@ import Projects from "./pages/Projects";
 import ProjectNew from "./pages/ProjectNew";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
+import Sitemap from "./pages/Sitemap";
 import ReportThreatButton from "./components/ReportThreatButton";
 
 const queryClient = new QueryClient();
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/projects/edit/:id" element={<ProjectNew />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/sitemap" element={<Sitemap />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
