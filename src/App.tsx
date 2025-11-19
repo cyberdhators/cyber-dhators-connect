@@ -15,6 +15,9 @@ import ProjectNew from "./pages/ProjectNew";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import Sitemap from "./pages/Sitemap";
+import Team from "./pages/Team";
+import Gallery from "./pages/Gallery";
+import Testimonials from "./pages/Testimonials";
 import ReportThreatButton from "./components/ReportThreatButton";
 
 const queryClient = new QueryClient();
@@ -38,6 +41,9 @@ const App = () => (
           <Route path="/projects/edit/:id" element={<ProjectNew />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/team" element={<Team />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/sitemap" element={<Sitemap />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
