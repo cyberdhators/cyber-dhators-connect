@@ -47,6 +47,27 @@
   </url>
   
   <url>
+    <loc>https://cyberdhators.codes/team</loc>
+    <lastmod>2025-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://cyberdhators.codes/gallery</loc>
+    <lastmod>2025-11-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://cyberdhators.codes/testimonials</loc>
+    <lastmod>2025-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>https://cyberdhators.codes/sitemap</loc>
     <lastmod>2025-01-13</lastmod>
     <changefreq>monthly</changefreq>
