@@ -7,6 +7,8 @@ import samuelImage from "@/assets/samuel-nimely.png";
 import oliverImage from "@/assets/Oliver-d-jerry-jr.png";
 import lormelImage from "@/assets/lormel-walter-banks.png";
 import mouanaImage from "@/assets/mouana-conneh.jpg";
+import usePageTitle from "@/hooks/usePageTitle";
+import useMetaDescription from "@/hooks/useMetaDescription";
 
 interface TeamMember {
   id: string;
@@ -24,6 +26,8 @@ interface TeamMember {
 }
 
 const Team = () => {
+  usePageTitle("Meet Our Team | Cyber Dhators - Founders & Members");
+  useMetaDescription("Meet the talented team behind Cyber Dhators. Our founders and experts are dedicated to cybersecurity innovation, security, and creating impact across Africa.");
   const teamMembers: TeamMember[] = [
     {
       id: "monkonmlah",

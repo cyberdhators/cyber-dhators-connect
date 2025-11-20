@@ -3,8 +3,12 @@ import Footer from "@/components/Footer";
 import { Shield, Lock, Code, Globe, BookOpen, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import usePageTitle from "@/hooks/usePageTitle";
+import useMetaDescription from "@/hooks/useMetaDescription";
 
 const Services = () => {
+  usePageTitle("Our Services | Cybersecurity & Tech Solutions | Cyber Dhators");
+  useMetaDescription("Explore Cyber Dhators' comprehensive services: cybersecurity solutions, threat detection, tech innovation, training, consulting, and digital transformation for businesses.");
   const services = [
     {
       icon: Shield,

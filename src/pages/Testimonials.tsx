@@ -1,6 +1,8 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Star, Quote } from "lucide-react";
+import usePageTitle from "@/hooks/usePageTitle";
+import useMetaDescription from "@/hooks/useMetaDescription";
 
 interface Testimonial {
   id: string;
@@ -13,6 +15,8 @@ interface Testimonial {
 }
 
 const Testimonials = () => {
+  usePageTitle("Client Testimonials | Cyber Dhators - Success Stories");
+  useMetaDescription("Read testimonials from our satisfied clients. Discover how Cyber Dhators' cybersecurity solutions and services helped businesses protect their digital infrastructure.");
   const testimonials: Testimonial[] = [
     {
       id: "1",

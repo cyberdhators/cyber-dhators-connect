@@ -2,6 +2,8 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { useState } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import usePageTitle from "@/hooks/usePageTitle";
+import useMetaDescription from "@/hooks/useMetaDescription";
 
 interface GalleryImage {
   id: string;
@@ -12,6 +14,8 @@ interface GalleryImage {
 }
 
 const Gallery = () => {
+  usePageTitle("Gallery | Cyber Dhators - Projects & Team Highlights");
+  useMetaDescription("Explore Cyber Dhators gallery featuring our projects, team moments, and cybersecurity solutions. See our work in action and meet the team behind innovation.");
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
 

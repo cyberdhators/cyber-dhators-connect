@@ -3,8 +3,12 @@ import Footer from "@/components/Footer";
 import { Shield, Target, Heart, Lock } from "lucide-react";
 import monkonmlahImage from "@/assets/monkonmlah-poure.png";
 import alieuImage from "@/assets/alieu-keita.png";
+import usePageTitle from "@/hooks/usePageTitle";
+import useMetaDescription from "@/hooks/useMetaDescription";
 
 const About = () => {
+  usePageTitle("About Us | Cyber Dhators - Our Mission & Founders");
+  useMetaDescription("Learn about Cyber Dhators' mission to create secure, innovative tech solutions. Meet our founders and discover our core values of innovation, integrity, and security.");
   const values = [
     {
       icon: Shield,
