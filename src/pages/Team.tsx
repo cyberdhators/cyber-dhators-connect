@@ -6,6 +6,7 @@ import alieuImage from "@/assets/alieu-keita.png";
 import samuelImage from "@/assets/samuel-nimely.png";
 import oliverImage from "@/assets/Oliver-d-jerry-jr.png";
 import lormelImage from "@/assets/lormel-walter-banks.png";
+import mouanaImage from "@/assets/mouana-conneh.jpg";
 
 interface TeamMember {
   id: string;
@@ -31,10 +32,10 @@ const Team = () => {
       category: "founder",
       bio: "Aspiring cybersecurity professional dedicated to building secure, innovative technologies that protect and empower digital communities. Passionate about driving digital trust and resilience in an increasingly connected world.",
       image: monkonmlahImage,
-      email: "monkonmlah@cyberdhators.codes",
+      email: "darlingtonpoure2000@gmail.com",
       social: {
         linkedin: "https://www.linkedin.com/in/monkonmlah-darlington-poure/",
-        twitter: "https://twitter.com/",
+        github: "https://github.com/Monkonmlah111/",
       },
     },
     {
@@ -44,10 +45,10 @@ const Team = () => {
       category: "founder",
       bio: "A creative, purpose-driven individual passionate about building meaningful digital experiences and empowering communities through innovation. Dedicated to using technology, design, and collaboration to create lasting impact.",
       image: alieuImage,
-      email: "alieu@cyberdhators.codes",
+      email: "keitaalieu96@gmail.com",
       social: {
-        linkedin: "https://www.linkedin.com/in/alieu-keita/",
-        twitter: "https://twitter.com/",
+        linkedin: "https://www.linkedin.com/in/alieu-s-keita-14035b36a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app ",
+        github: "https://github.com/",
       },
     },
     {
@@ -89,6 +90,20 @@ const Team = () => {
         github: "https://github.com/lormelbanks-sudo/",
       },
     },
+    {
+      id: "008",
+      name: "Mouana K Conneh",
+      role: "Member",
+      category: "team",
+      bio: "I'm a data-driven researcher who is committed to applying mathematical reasoning and strong database management skills to uncover meaningful insights, drive innovation, and support informed decision-making across diverse fields.",
+      image: mouanaImage,
+      email: "connehmouanakalilu@gmail.com",
+      social: {
+        linkedin: "https://linkedin.com/in/...",
+        github: "https://github.com/lormelbanks-sudo/",
+      },
+    },
+    
     
     // Add more team members here as needed
     // {
@@ -219,11 +234,11 @@ const Team = () => {
                   The experts making it all possible
                 </p>
               </div>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-3">
                 {team.map((member) => (
                   <div
                     key={member.id}
-                    className="bg-card border border-border rounded-lg p-4 hover:border-secondary/40 transition-all hover:shadow-lg hover:shadow-secondary/10"
+                    className="bg-card border border-border rounded-lg p-3 hover:border-secondary/40 transition-all hover:shadow-lg hover:shadow-secondary/10"
                   >
                     <div className="group">
                       <div className="relative overflow-hidden rounded-lg mb-3">
