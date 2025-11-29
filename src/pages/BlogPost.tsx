@@ -6,6 +6,9 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { Calendar, User, ArrowLeft, Edit, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import usePageTitle from "@/hooks/usePageTitle";
+import useMetaDescription from "@/hooks/useMetaDescription";
+import useStructuredData from "@/hooks/useStructuredData";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -113,6 +116,20 @@ const BlogPost = () => {
   };
 
   const canEdit = user && (isAdmin || post?.author_id === user.id);
+
+  // Set dynamic page title and meta description
+  if (post) {
+    usePageTitle(`${post.title} | Cyber Dhators Blog`);
+    useMetaDescription(post.excerpt || post.content.substring(0, 160));
+    useStructuredData({
+      title: post.title,
+      description: post.excerpt || post.content.substring(0, 160),
+      author: post.profiles?.full_name || "Cyber Dhators",
+      datePublished: post.created_at,
+      dateModified: post.created_at,
+      url: `https://cyberdhators.codes/blog/${id}`,
+    });
+  }
 
   if (isLoading) {
     return (

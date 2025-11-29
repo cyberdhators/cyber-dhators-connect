@@ -7,6 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { supabase } from "@/integrations/supabase/client";
 import { Calendar, User, Edit, Plus, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import usePageTitle from "@/hooks/usePageTitle";
+import useMetaDescription from "@/hooks/useMetaDescription";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -34,6 +36,9 @@ interface BlogPost {
 }
 
 const Blog = () => {
+  usePageTitle("Blog | Cyber Dhators - Cybersecurity Insights & Articles");
+  useMetaDescription("Read our latest blog posts on cybersecurity, technology trends, and digital security solutions. Expert insights from Cyber Dhators team for African businesses.");
+  
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
