@@ -117,19 +117,17 @@ const BlogPost = () => {
 
   const canEdit = user && (isAdmin || post?.author_id === user.id);
 
-  // Set dynamic page title and meta description
-  if (post) {
-    usePageTitle(`${post.title} | Cyber Dhators Blog`);
-    useMetaDescription(post.excerpt || post.content.substring(0, 160));
-    useStructuredData({
-      title: post.title,
-      description: post.excerpt || post.content.substring(0, 160),
-      author: post.profiles?.full_name || "Cyber Dhators",
-      datePublished: post.created_at,
-      dateModified: post.created_at,
-      url: `https://cyberdhators.codes/blog/${id}`,
-    });
-  }
+  // Set dynamic page title and meta description - hooks must be called unconditionally
+  usePageTitle(post ? `${post.title} | Cyber Dhators Blog` : "Loading... | Cyber Dhators Blog");
+  useMetaDescription(post ? (post.excerpt || post.content.substring(0, 160)) : "Loading blog post...");
+  useStructuredData(post ? {
+    title: post.title,
+    description: post.excerpt || post.content.substring(0, 160),
+    author: post.profiles?.full_name || "Cyber Dhators",
+    datePublished: post.created_at,
+    dateModified: post.created_at,
+    url: `https://cyberdhators.codes/blog/${id}`,
+  } : null);
 
   if (isLoading) {
     return (
