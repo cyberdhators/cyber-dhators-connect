@@ -185,7 +185,11 @@ const Blog = () => {
                       </div>
                     </div>
                     
-                    {canEditPost(post) ? (
+                    <Button asChild variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground mb-2">
+                      <Link to={`/blog/${post.id}`}>Read More</Link>
+                    </Button>
+                    
+                    {canEditPost(post) && (
                       <div className="flex gap-2">
                         <Button asChild variant="outline" size="sm" className="flex-1">
                           <Link to={`/blog/edit/${post.id}`}>
@@ -216,10 +220,6 @@ const Blog = () => {
                           </AlertDialogContent>
                         </AlertDialog>
                       </div>
-                    ) : (
-                      <Button asChild variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground">
-                        <Link to={`/blog/${post.id}`}>Read More</Link>
-                      </Button>
                     )}
                   </CardContent>
                 </Card>
