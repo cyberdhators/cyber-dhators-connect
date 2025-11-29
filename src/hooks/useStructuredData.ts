@@ -10,16 +10,12 @@ interface StructuredDataProps {
   url: string;
 }
 
-const useStructuredData = ({
-  title,
-  description,
-  image,
-  author,
-  datePublished,
-  dateModified,
-  url,
-}: StructuredDataProps) => {
+const useStructuredData = (props: StructuredDataProps | null) => {
   useEffect(() => {
+    if (!props) return;
+
+    const { title, description, image, author, datePublished, dateModified, url } = props;
+
     const schemaData = {
       "@context": "https://schema.org",
       "@type": "BlogPosting",
@@ -51,7 +47,7 @@ const useStructuredData = ({
     return () => {
       document.head.removeChild(script);
     };
-  }, [title, description, image, author, datePublished, dateModified, url]);
+  }, [props]);
 };
 
 export default useStructuredData;
