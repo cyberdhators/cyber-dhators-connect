@@ -1,3 +1,4 @@
+import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -19,6 +20,9 @@ import Team from "./pages/Team";
 import Gallery from "./pages/Gallery";
 import Testimonials from "./pages/Testimonials";
 import ReportThreatButton from "./components/ReportThreatButton";
+
+const Products = lazy(() => import("./pages/Products"));
+const ProductDetail = lazy(() => import("./pages/ProductDetail"));
 
 const queryClient = new QueryClient();
 
@@ -45,6 +49,22 @@ const App = () => (
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/sitemap" element={<Sitemap />} />
+          <Route
+            path="/products"
+            element={
+              <Suspense fallback={<div className="min-h-screen bg-background" />}>
+                <Products />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/products/:slug"
+            element={
+              <Suspense fallback={<div className="min-h-screen bg-background" />}>
+                <ProductDetail />
+              </Suspense>
+            }
+          />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
