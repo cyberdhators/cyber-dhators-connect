@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { getErrorMessage } from "@/lib/utils";
 import Navigation from "@/components/Navigation";
 import logo from "@/assets/cd-logo.png";
 
@@ -52,10 +53,10 @@ const Auth = () => {
         title: "Welcome back!",
         description: "You have successfully signed in.",
       });
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: "Sign in failed",
-        description: error.message,
+        description: getErrorMessage(error),
         variant: "destructive",
       });
     } finally {

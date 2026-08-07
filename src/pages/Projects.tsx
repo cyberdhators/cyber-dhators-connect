@@ -7,6 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { supabase } from "@/integrations/supabase/client";
 import { Github, ExternalLink, Plus, User, Edit, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { getErrorMessage } from "@/lib/utils";
+import type { User as SupabaseUser } from "@supabase/supabase-js";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -37,7 +39,7 @@ interface Project {
 const Projects = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<SupabaseUser | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const { toast } = useToast();
 
@@ -74,11 +76,11 @@ const Projects = () => {
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      setProjects(data as any || []);
-    } catch (error: any) {
+      setProjects((data as Project[]) || []);
+    } catch (error) {
       toast({
         title: "Error loading projects",
-        description: error.message,
+        description: getErrorMessage(error),
         variant: "destructive",
       });
     } finally {
@@ -100,10 +102,10 @@ const Projects = () => {
         description: "Project deleted successfully",
       });
       fetchProjects();
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: "Error deleting project",
-        description: error.message,
+        description: getErrorMessage(error),
         variant: "destructive",
       });
     }

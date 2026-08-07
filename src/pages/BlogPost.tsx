@@ -9,6 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 import usePageTitle from "@/hooks/usePageTitle";
 import useMetaDescription from "@/hooks/useMetaDescription";
 import useStructuredData from "@/hooks/useStructuredData";
+import { getErrorMessage } from "@/lib/utils";
+import type { User as SupabaseUser } from "@supabase/supabase-js";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -29,6 +31,7 @@ interface BlogPost {
   category: string;
   author_id: string;
   created_at: string;
+  featured_image_url: string | null;
   profiles: {
     full_name: string;
     avatar_url: string;
@@ -40,7 +43,7 @@ const BlogPost = () => {
   const navigate = useNavigate();
   const [post, setPost] = useState<BlogPost | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<SupabaseUser | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const { toast } = useToast();
 
@@ -79,11 +82,11 @@ const BlogPost = () => {
         .maybeSingle();
 
       if (error) throw error;
-      setPost(data as any);
-    } catch (error: any) {
+      setPost(data as BlogPost);
+    } catch (error) {
       toast({
         title: "Error loading post",
-        description: error.message,
+        description: getErrorMessage(error),
         variant: "destructive",
       });
       navigate("/blog");
@@ -106,10 +109,10 @@ const BlogPost = () => {
         description: "Blog post deleted successfully",
       });
       navigate("/blog");
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: "Error deleting post",
-        description: error.message,
+        description: getErrorMessage(error),
         variant: "destructive",
       });
     }
@@ -220,10 +223,10 @@ const BlogPost = () => {
             {post.title}
           </h1>
 
-          {(post as any).featured_image_url && (
+          {post.featured_image_url && (
             <div className="aspect-video overflow-hidden rounded-lg mb-8">
-              <img 
-                src={(post as any).featured_image_url} 
+              <img
+                src={post.featured_image_url}
                 alt={post.title}
                 className="w-full h-full object-cover"
               />

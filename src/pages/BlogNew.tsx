@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { getErrorMessage } from "@/lib/utils";
 import { ArrowLeft, Upload, X } from "lucide-react";
 
 const BlogNew = () => {
@@ -86,10 +87,10 @@ const BlogNew = () => {
       if (data.featured_image_url) {
         setImagePreview(data.featured_image_url);
       }
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: "Error loading post",
-        description: error.message,
+        description: getErrorMessage(error),
         variant: "destructive",
       });
       navigate("/blog");
@@ -187,10 +188,10 @@ const BlogNew = () => {
       }
       
       navigate("/blog");
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: `Error ${id ? 'updating' : 'creating'} post`,
-        description: error.message,
+        description: getErrorMessage(error),
         variant: "destructive",
       });
     } finally {

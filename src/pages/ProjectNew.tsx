@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { getErrorMessage } from "@/lib/utils";
 import { ArrowLeft, Upload, X } from "lucide-react";
 
 const ProjectNew = () => {
@@ -88,10 +89,10 @@ const ProjectNew = () => {
       if (data.thumbnail_url) {
         setImagePreview(data.thumbnail_url);
       }
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: "Error loading project",
-        description: error.message,
+        description: getErrorMessage(error),
         variant: "destructive",
       });
       navigate("/projects");
@@ -190,10 +191,10 @@ const ProjectNew = () => {
       }
       
       navigate("/projects");
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: `Error ${id ? 'updating' : 'submitting'} project`,
-        description: error.message,
+        description: getErrorMessage(error),
         variant: "destructive",
       });
     } finally {

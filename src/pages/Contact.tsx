@@ -8,6 +8,7 @@ import { Mail, MapPin, Phone, Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import usePageTitle from "@/hooks/usePageTitle";
 import useMetaDescription from "@/hooks/useMetaDescription";
+import { getErrorMessage } from "@/lib/utils";
 
 const Contact = () => {
   usePageTitle("Contact Us | Cyber Dhators - Get in Touch");
@@ -41,10 +42,10 @@ const Contact = () => {
         description: "We'll get back to you as soon as possible.",
       });
       setFormData({ name: "", email: "", subject: "", message: "" });
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: "Send failed",
-        description: error?.message || "An error occurred while sending your message.",
+        description: getErrorMessage(error, "An error occurred while sending your message."),
         variant: "destructive"
       });
     } finally {

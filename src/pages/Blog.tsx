@@ -9,6 +9,8 @@ import { Calendar, User, Edit, Plus, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import usePageTitle from "@/hooks/usePageTitle";
 import useMetaDescription from "@/hooks/useMetaDescription";
+import { getErrorMessage } from "@/lib/utils";
+import type { User as SupabaseUser } from "@supabase/supabase-js";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -29,6 +31,7 @@ interface BlogPost {
   category: string;
   author_id: string;
   created_at: string;
+  featured_image_url: string | null;
   profiles: {
     full_name: string;
     avatar_url: string;
@@ -41,7 +44,7 @@ const Blog = () => {
   
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<SupabaseUser | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const { toast } = useToast();
 
@@ -79,11 +82,11 @@ const Blog = () => {
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      setPosts(data as any || []);
-    } catch (error: any) {
+      setPosts((data as BlogPost[]) || []);
+    } catch (error) {
       toast({
         title: "Error loading posts",
-        description: error.message,
+        description: getErrorMessage(error),
         variant: "destructive",
       });
     } finally {
@@ -105,10 +108,10 @@ const Blog = () => {
         description: "Blog post deleted successfully",
       });
       fetchPosts();
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: "Error deleting post",
-        description: error.message,
+        description: getErrorMessage(error),
         variant: "destructive",
       });
     }
@@ -157,10 +160,10 @@ const Blog = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {posts.map((post) => (
                 <Card key={post.id} className="hover:border-primary/50 transition-all hover:shadow-lg hover:shadow-primary/10 group">
-                  {(post as any).featured_image_url && (
+                  {post.featured_image_url && (
                     <div className="aspect-video overflow-hidden rounded-t-lg">
-                      <img 
-                        src={(post as any).featured_image_url} 
+                      <img
+                        src={post.featured_image_url}
                         alt={post.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                       />
