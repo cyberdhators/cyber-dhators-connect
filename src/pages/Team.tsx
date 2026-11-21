@@ -47,7 +47,7 @@ const Team = () => {
       name: "Alieu S Keita",
       role: "Co-Founder",
       category: "founder",
-      bio: "A creative, purpose-driven individual passionate about building meaningful digital experiences and empowering communities through innovation. Dedicated to using technology, design, and collaboration to create lasting impact.",
+      bio: "A developer and cybersecurity engineer holding a Bachelor's degree in Information Technology from Graphic Era University in India. Dedicated to using technology, design, and collaboration to build secure digital experiences and create lasting impact.",
       image: alieuImage,
       email: "keitaalieu96@gmail.com",
       social: {

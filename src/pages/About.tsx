@@ -84,7 +84,7 @@ const About = () => {
                   <h3 className="text-2xl font-bold mb-2">Alieu S Keita</h3>
                   <p className="text-sm text-secondary font-semibold mb-3">Co-Founder</p>
                   <p className="text-muted-foreground leading-relaxed">
-                    A creative, purpose-driven individual passionate about building meaningful digital experiences and empowering communities through innovation. Dedicated to using technology, design, and collaboration to create lasting impact.
+                    A developer and cybersecurity engineer holding a Bachelor's degree in Information Technology from Graphic Era University in India. Dedicated to using technology, design, and collaboration to build secure digital experiences and create lasting impact.
                   </p>
                 </div>
               </div>
