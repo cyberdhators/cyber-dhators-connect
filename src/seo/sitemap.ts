@@ -25,7 +25,8 @@ function day(date: string | null | undefined): string | undefined {
 }
 
 function latest(...dates: (string | undefined)[]): string | undefined {
-  return dates.filter((d): d is string => !!d).sort().at(-1);
+  const sorted = dates.filter((d): d is string => !!d).sort();
+  return sorted[sorted.length - 1];
 }
 
 function escapeXml(s: string): string {
