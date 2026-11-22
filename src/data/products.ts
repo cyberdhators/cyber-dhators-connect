@@ -72,7 +72,7 @@ export const products: Product[] = [
     company: "Cyber Dhators",
     releaseDate: "2026-01-15",
     lastUpdated: "2026-08-01",
-    website: "https://cyberdhators.codes",
+    website: "https://cyberdhators.com",
     github: "https://github.com/cyberdhators/cyber-dhators-connect",
     supportEmail: "cyberdhators@gmail.com",
     documentation: {

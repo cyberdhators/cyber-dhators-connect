@@ -7,4 +7,4 @@ Disallow: /projects/new
 Disallow: /projects/edit/
 Disallow: /cdn-cgi/
 
-Sitemap: https://cyberdhators.codes/sitemap.xml
+Sitemap: https://cyberdhators.com/sitemap.xml

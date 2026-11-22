@@ -29,14 +29,14 @@ A dynamic sitemap is generated that includes all blog posts
 - Automatically updated with each new post
 - Tells search engines about your content
 
-**Location**: `src/utils/generateBlogSitemap.ts`
+**Location**: `src/seo/sitemap.ts` (served live by `worker/index.ts`)
 
 ## How Search Engines Find Your Blog Posts
 
 ### Step 1: Posting a Blog
 When a user creates a new blog post:
 1. Title, excerpt, and content are stored in Supabase
-2. Post automatically gets a unique URL: `https://cyberdhators.codes/blog/[post-id]`
+2. Post automatically gets a unique URL: `https://cyberdhators.com/blog/[title-slug]-[id-prefix]`
 
 ### Step 2: SEO Optimization
 When someone visits the blog post page:
@@ -95,16 +95,16 @@ When someone visits the blog post page:
 
 ### Google Search Console:
 1. Go to [Google Search Console](https://search.google.com/search-console)
-2. Select your property (cyberdhators.codes)
+2. Select your property (cyberdhators.com)
 3. Go to Sitemaps
-4. Submit: `https://cyberdhators.codes/sitemap.xml` (main sitemap)
+4. Submit: `https://cyberdhators.com/sitemap.xml` (main sitemap)
 5. Monitor crawl statistics
 
 ### Bing Webmaster Tools:
 1. Go to [Bing Webmaster Tools](https://www.bing.com/webmasters)
 2. Select your site
 3. Go to Sitemaps
-4. Submit: `https://cyberdhators.codes/sitemap.xml`
+4. Submit: `https://cyberdhators.com/sitemap.xml`
 
 ### Yandex (if targeting Russian audience):
 1. Go to [Yandex Webmaster](https://webmaster.yandex.com/)
@@ -165,7 +165,7 @@ When someone visits the blog post page:
 - `src/hooks/usePageTitle.ts` - Dynamic page titles
 - `src/hooks/useMetaDescription.ts` - Dynamic meta descriptions
 - `src/hooks/useStructuredData.ts` - JSON-LD schema markup
-- `src/utils/generateBlogSitemap.ts` - Dynamic sitemap generator
+- `src/seo/sitemap.ts` - Sitemap generator (served live by `worker/index.ts`)
 - `src/pages/Blog.tsx` - Updated with SEO hooks
 - `src/pages/BlogPost.tsx` - Updated with dynamic SEO
 

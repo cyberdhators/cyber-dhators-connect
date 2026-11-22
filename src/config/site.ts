@@ -2,7 +2,7 @@
 // Used by the router (src/App.tsx), the /sitemap page, the XML sitemap and the Cloudflare Worker.
 // Only relative imports here: this file is also loaded by vite.config.ts.
 
-export const SITE_URL = "https://cyberdhators.codes";
+export const SITE_URL = "https://cyberdhators.com";
 export const SITE_NAME = "Cyber Dhators";
 
 export const DEFAULT_TITLE = "Cyber Dhators - Protecting Africa's Digital Future";
