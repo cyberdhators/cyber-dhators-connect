@@ -9,6 +9,7 @@ import {
 import { Shield, Menu, X, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import logo from "@/assets/cd-logo.png";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const primaryLinks = [
   { name: "Home", path: "/" },
@@ -88,7 +89,8 @@ const Navigation = () => {
             </DropdownMenu>
           </div>
 
-          <div className="hidden md:flex items-center">
+          <div className="hidden md:flex items-center gap-2">
+            <ThemeToggle />
             <Button
               size="sm"
               className="rounded-full"
@@ -100,6 +102,8 @@ const Navigation = () => {
           </div>
 
           {/* Mobile menu button */}
+          <div className="md:hidden flex items-center gap-1">
+            <ThemeToggle />
           <button
             className="md:hidden text-foreground p-2"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -107,6 +111,7 @@ const Navigation = () => {
           >
             {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
