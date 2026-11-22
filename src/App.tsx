@@ -15,7 +15,6 @@ import Projects from "./pages/Projects";
 import ProjectNew from "./pages/ProjectNew";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
-import Sitemap from "./pages/Sitemap";
 import Team from "./pages/Team";
 import Gallery from "./pages/Gallery";
 import Testimonials from "./pages/Testimonials";
@@ -29,7 +28,7 @@ const ProductDetail = lazy(() => import("./pages/ProductDetail"));
 const queryClient = new QueryClient();
 
 // Every public page in src/config/site.ts must have a component here (enforced by the type),
-// which keeps the router, sitemap.xml, the /sitemap page and the Worker in sync.
+// which keeps the router, sitemap.xml and the Worker in sync.
 const PUBLIC_PAGE_COMPONENTS: Record<PublicPath, ComponentType> = {
   "/": Home,
   "/about": About,
@@ -41,7 +40,6 @@ const PUBLIC_PAGE_COMPONENTS: Record<PublicPath, ComponentType> = {
   "/gallery": Gallery,
   "/testimonials": Testimonials,
   "/contact": Contact,
-  "/sitemap": Sitemap,
 };
 
 const pageFallback = <div className="min-h-screen bg-background" />;

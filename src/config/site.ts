@@ -1,5 +1,5 @@
 // Single source of truth for the site's public pages and SEO defaults.
-// Used by the router (src/App.tsx), the /sitemap page, the XML sitemap and the Cloudflare Worker.
+// Used by the router (src/App.tsx), sitemap.xml and the Cloudflare Worker.
 // Only relative imports here: this file is also loaded by vite.config.ts.
 
 export const SITE_URL = "https://cyberdhators.com";
@@ -11,19 +11,14 @@ export const DEFAULT_DESCRIPTION =
 export const DEFAULT_KEYWORDS = "cybersecurity, technology, Africa, Liberia, digital security, tech solutions";
 export const DEFAULT_IMAGE = `${SITE_URL}/cd-logo.png`;
 
-export type SitemapSection = "Main Pages" | "Content" | "Company" | "Contact & Support";
-
 export interface PublicPage {
   path: string;
   /** Browser tab / search result title. */
   title: string;
   /** Meta description. */
   description: string;
-  /** Short name shown on the /sitemap page. */
+  /** Short link text (used in the no-JavaScript fallback navigation). */
   label: string;
-  /** One-line summary shown on the /sitemap page. */
-  summary: string;
-  section: SitemapSection;
   /** Source file whose last git commit date is used as the sitemap <lastmod>. */
   source: string;
 }
@@ -35,8 +30,6 @@ export const PUBLIC_PAGES = [
     description:
       "Discover Cyber Dhators: Leading cybersecurity and tech innovation for Africa. Protect your digital future with our advanced security solutions and services.",
     label: "Home",
-    summary: "Homepage with services overview",
-    section: "Main Pages",
     source: "src/pages/Home.tsx",
   },
   {
@@ -45,8 +38,6 @@ export const PUBLIC_PAGES = [
     description:
       "Learn about Cyber Dhators' mission to create secure, innovative tech solutions. Meet our founders and discover our core values of innovation, integrity, and security.",
     label: "About Us",
-    summary: "Learn about our team and mission",
-    section: "Main Pages",
     source: "src/pages/About.tsx",
   },
   {
@@ -55,8 +46,6 @@ export const PUBLIC_PAGES = [
     description:
       "Explore Cyber Dhators' comprehensive services: cybersecurity solutions, threat detection, tech innovation, training, consulting, and digital transformation for businesses.",
     label: "Services",
-    summary: "Our cybersecurity services",
-    section: "Main Pages",
     source: "src/pages/Services.tsx",
   },
   {
@@ -65,8 +54,6 @@ export const PUBLIC_PAGES = [
     description:
       "Browse Cyber Dhators' full catalog of software products — desktop, mobile, and web apps built for Africa and beyond.",
     label: "Products",
-    summary: "Browse our software products and downloads",
-    section: "Main Pages",
     source: "src/pages/Products.tsx",
   },
   {
@@ -75,8 +62,6 @@ export const PUBLIC_PAGES = [
     description:
       "Read our latest blog posts on cybersecurity, technology trends, and digital security solutions. Expert insights from Cyber Dhators team for African businesses.",
     label: "Blog",
-    summary: "Latest cybersecurity insights and news",
-    section: "Content",
     source: "src/pages/Blog.tsx",
   },
   {
@@ -85,8 +70,6 @@ export const PUBLIC_PAGES = [
     description:
       "Explore innovative tech and cybersecurity projects built by the Cyber Dhators community, with source code and live demos.",
     label: "Projects",
-    summary: "Our work and case studies",
-    section: "Content",
     source: "src/pages/Projects.tsx",
   },
   {
@@ -95,8 +78,6 @@ export const PUBLIC_PAGES = [
     description:
       "Meet the talented team behind Cyber Dhators. Our founders and experts are dedicated to cybersecurity innovation, security, and creating impact across Africa.",
     label: "Team",
-    summary: "Meet the people behind Cyber Dhators",
-    section: "Company",
     source: "src/pages/Team.tsx",
   },
   {
@@ -105,8 +86,6 @@ export const PUBLIC_PAGES = [
     description:
       "Explore Cyber Dhators gallery featuring our projects, team moments, and cybersecurity solutions. See our work in action and meet the team behind innovation.",
     label: "Gallery",
-    summary: "Photos from our events and work",
-    section: "Company",
     source: "src/pages/Gallery.tsx",
   },
   {
@@ -115,8 +94,6 @@ export const PUBLIC_PAGES = [
     description:
       "Read what organizations like Gardiner Consulting Services, MCAM, IDWP, CORWADO, and Our Lady of Fatima Alumni Association say about working with Cyber Dhators.",
     label: "Testimonials",
-    summary: "What clients and partners say about us",
-    section: "Company",
     source: "src/pages/Testimonials.tsx",
   },
   {
@@ -125,18 +102,7 @@ export const PUBLIC_PAGES = [
     description:
       "Get in touch with Cyber Dhators. Reach out to discuss your cybersecurity needs, partnerships, or inquiries. We're here to help protect your digital future.",
     label: "Contact Us",
-    summary: "Get in touch with our team",
-    section: "Contact & Support",
     source: "src/pages/Contact.tsx",
-  },
-  {
-    path: "/sitemap",
-    title: "Site Map | Cyber Dhators",
-    description: "An overview of every page, product, blog post and project on the Cyber Dhators website.",
-    label: "Site Map",
-    summary: "Every page on this site",
-    section: "Contact & Support",
-    source: "src/pages/Sitemap.tsx",
   },
 ] as const satisfies readonly PublicPage[];
 
