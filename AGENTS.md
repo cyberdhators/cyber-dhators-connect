@@ -1,0 +1,1 @@
+- Keep the Cloudflare Vite plugin gated behind WORKERS_CI/CLOUDFLARE_BUILD: Lovable hosting needs a flat static build with dist/index.html, which the plugin breaks.

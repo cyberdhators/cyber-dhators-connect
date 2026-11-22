@@ -5,6 +5,10 @@ import { componentTagger } from "lovable-tagger";
 import { cloudflare } from "@cloudflare/vite-plugin";
 import { sitemap } from "./vite-plugins/sitemap";
 
+// The Cloudflare plugin splits the build into dist/client + a Worker bundle. Lovable hosting
+// needs a plain static build (dist/index.html), so only enable it for Cloudflare deploys.
+const cloudflareBuild = process.env.WORKERS_CI === "1" || process.env.CLOUDFLARE_BUILD === "1";
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
@@ -13,7 +17,7 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
-    cloudflare(),
+    ...(cloudflareBuild ? [cloudflare()] : []),
     sitemap(),
     ...(mode === "development" ? [componentTagger()] : []),
   ],
