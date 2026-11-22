@@ -3,12 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Shield, Lock, Code, Users, ArrowRight, Zap, Globe, Target } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import usePageTitle from "@/hooks/usePageTitle";
-import useMetaDescription from "@/hooks/useMetaDescription";
+import { usePublicPageSEO } from "@/hooks/usePageSEO";
 
 const Home = () => {
-  usePageTitle("Cyber Dhators - Protecting Africa's Digital Future");
-  useMetaDescription("Discover Cyber Dhators: Leading cybersecurity and tech innovation for Africa. Protect your digital future with our advanced security solutions and services.");
+  usePublicPageSEO("/");
   const features = [
     {
       icon: Shield,

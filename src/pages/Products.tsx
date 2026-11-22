@@ -4,8 +4,7 @@ import { ArrowDown } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import usePageTitle from "@/hooks/usePageTitle";
-import useMetaDescription from "@/hooks/useMetaDescription";
+import { usePublicPageSEO } from "@/hooks/usePageSEO";
 import ProductBreadcrumb from "@/components/products/ProductBreadcrumb";
 import SearchBar from "@/components/products/SearchBar";
 import FilterBar from "@/components/products/FilterBar";
@@ -19,10 +18,7 @@ type CategoryValue = "all" | ProductCategory;
 const CATEGORIES = Object.keys(CATEGORY_LABELS) as CategoryValue[];
 
 const Products = () => {
-  usePageTitle("Our Products | Cyber Dhators");
-  useMetaDescription(
-    "Browse Cyber Dhators' full catalog of software products — desktop, mobile, and web apps built for Africa and beyond.",
-  );
+  usePublicPageSEO("/products");
 
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<CategoryValue>("all");

@@ -8,6 +8,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Github, ExternalLink, Plus, User, Edit, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { getErrorMessage } from "@/lib/utils";
+import { usePublicPageSEO } from "@/hooks/usePageSEO";
+import { projectUrl } from "@/seo/meta";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import {
   AlertDialog,
@@ -37,6 +39,7 @@ interface Project {
 }
 
 const Projects = () => {
+  usePublicPageSEO("/projects");
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<SupabaseUser | null>(null);
@@ -170,12 +173,15 @@ const Projects = () => {
                       </span>
                     </div>
                     <CardTitle className="group-hover:text-primary transition-colors">
-                      {project.title}
+                      <Link to={projectUrl(project)}>{project.title}</Link>
                     </CardTitle>
                     <CardDescription>{project.description}</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    
+                    <Button asChild variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground mb-2">
+                      <Link to={projectUrl(project)}>View Details</Link>
+                    </Button>
+
                     {canEditProject(project) ? (
                       <>
                         <div className="flex gap-2 mb-2">

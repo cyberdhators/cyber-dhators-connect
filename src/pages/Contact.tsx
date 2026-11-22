@@ -6,13 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, MapPin, Phone, Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import usePageTitle from "@/hooks/usePageTitle";
-import useMetaDescription from "@/hooks/useMetaDescription";
+import { usePublicPageSEO } from "@/hooks/usePageSEO";
 import { getErrorMessage } from "@/lib/utils";
 
 const Contact = () => {
-  usePageTitle("Contact Us | Cyber Dhators - Get in Touch");
-  useMetaDescription("Get in touch with Cyber Dhators. Reach out to discuss your cybersecurity needs, partnerships, or inquiries. We're here to help protect your digital future.");
+  usePublicPageSEO("/contact");
   const [formData, setFormData] = useState({
     name: "",
     email: "",

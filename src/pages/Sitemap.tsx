@@ -1,8 +1,13 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { Home, FileText, Mail, Package } from "lucide-react";
+import { Home, FileText, Mail, Package, Users, BookOpen, FolderGit2 } from "lucide-react";
 import { getAllProducts } from "@/data/products";
+import { PUBLIC_PAGES, type SitemapSection } from "@/config/site";
+import { supabase } from "@/integrations/supabase/client";
+import { usePublicPageSEO } from "@/hooks/usePageSEO";
+import { blogPostUrl, productUrl, projectUrl, truncate } from "@/seo/meta";
 
 interface SitemapLink {
   name: string;
@@ -11,40 +16,78 @@ interface SitemapLink {
   onClick?: () => void;
 }
 
+type Section = { title: string; icon: typeof Home; links: SitemapLink[] };
+
+const SECTION_ICONS: Record<SitemapSection, typeof Home> = {
+  "Main Pages": Home,
+  Content: FileText,
+  Company: Users,
+  "Contact & Support": Mail,
+};
+
+function pagesIn(section: SitemapSection): SitemapLink[] {
+  return PUBLIC_PAGES.filter((p) => p.section === section).map((p) => ({
+    name: p.label,
+    path: p.path,
+    description: p.summary,
+  }));
+}
+
 const Sitemap = () => {
-  const sections: { title: string; icon: typeof Home; links: SitemapLink[] }[] = [
-    {
-      title: "Main Pages",
-      icon: Home,
-      links: [
-        { name: "Home", path: "/", description: "Homepage with services overview" },
-        { name: "About Us", path: "/about", description: "Learn about our team and mission" },
-        { name: "Services", path: "/services", description: "Our cybersecurity services" },
-        { name: "Products", path: "/products", description: "Browse our software products and downloads" },
-      ],
-    },
+  usePublicPageSEO("/sitemap");
+  const [posts, setPosts] = useState<SitemapLink[]>([]);
+  const [projects, setProjects] = useState<SitemapLink[]>([]);
+
+  useEffect(() => {
+    supabase
+      .from("blog_posts")
+      .select("id, title, excerpt, content")
+      .eq("published", true)
+      .order("created_at", { ascending: false })
+      .then(({ data }) =>
+        setPosts(
+          (data ?? []).map((p) => ({
+            name: p.title,
+            path: blogPostUrl(p),
+            description: truncate(p.excerpt || p.content, 120),
+          })),
+        ),
+      );
+    supabase
+      .from("projects")
+      .select("id, title, description")
+      .order("created_at", { ascending: false })
+      .then(({ data }) =>
+        setProjects(
+          (data ?? []).map((p) => ({
+            name: p.title,
+            path: projectUrl(p),
+            description: truncate(p.description, 120),
+          })),
+        ),
+      );
+  }, []);
+
+  const sections: Section[] = [
+    { title: "Main Pages", icon: SECTION_ICONS["Main Pages"], links: pagesIn("Main Pages") },
     {
       title: "Software Products",
       icon: Package,
       links: getAllProducts().map((product) => ({
         name: product.name,
-        path: `/products/${product.slug}`,
+        path: productUrl(product),
         description: product.shortDescription,
       })),
     },
-    {
-      title: "Content",
-      icon: FileText,
-      links: [
-        { name: "Blog", path: "/blog", description: "Latest cybersecurity insights and news" },
-        { name: "Projects", path: "/projects", description: "Our work and case studies" },
-      ],
-    },
+    { title: "Content", icon: SECTION_ICONS.Content, links: pagesIn("Content") },
+    { title: "Blog Posts", icon: BookOpen, links: posts },
+    { title: "Projects", icon: FolderGit2, links: projects },
+    { title: "Company", icon: SECTION_ICONS.Company, links: pagesIn("Company") },
     {
       title: "Contact & Support",
-      icon: Mail,
+      icon: SECTION_ICONS["Contact & Support"],
       links: [
-        { name: "Contact Us", path: "/contact", description: "Get in touch with our team" },
+        ...pagesIn("Contact & Support").filter((l) => l.path !== "/sitemap"),
         {
           name: "Report Threat",
           description: "Report a cybersecurity threat",
@@ -52,7 +95,7 @@ const Sitemap = () => {
         },
       ],
     },
-  ];
+  ].filter((section) => section.links.length > 0);
 
   return (
     <div className="min-h-screen bg-background">
@@ -81,7 +124,7 @@ const Sitemap = () => {
                     {section.links.map((link) =>
                       link.path ? (
                         <Link
-                          key={link.name}
+                          key={link.path}
                           to={link.path}
                           className="block p-4 bg-background border border-border rounded-md hover:border-primary transition-colors group"
                         >

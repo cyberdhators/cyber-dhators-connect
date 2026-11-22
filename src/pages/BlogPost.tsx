@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { Calendar, User, ArrowLeft, Edit, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import usePageTitle from "@/hooks/usePageTitle";
-import useMetaDescription from "@/hooks/useMetaDescription";
-import useStructuredData from "@/hooks/useStructuredData";
+import usePageSEO from "@/hooks/usePageSEO";
+import { blogPostMeta, blogPostUrl } from "@/seo/meta";
+import { parseContentSlug, pickBySlug } from "@/lib/slug";
 import { getErrorMessage } from "@/lib/utils";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import {
@@ -31,6 +31,7 @@ interface BlogPost {
   category: string;
   author_id: string;
   created_at: string;
+  updated_at: string;
   featured_image_url: string | null;
   profiles: {
     full_name: string;
@@ -39,7 +40,7 @@ interface BlogPost {
 }
 
 const BlogPost = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
   const [post, setPost] = useState<BlogPost | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -50,7 +51,7 @@ const BlogPost = () => {
   useEffect(() => {
     checkUser();
     fetchPost();
-  }, [id]);
+  }, [slug]);
 
   const checkUser = async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -69,20 +70,28 @@ const BlogPost = () => {
 
   const fetchPost = async () => {
     try {
-      const { data, error } = await supabase
-        .from("blog_posts")
-        .select(`
+      const ref = parseContentSlug(slug);
+      if (!ref) {
+        setPost(null);
+        return;
+      }
+      let query = supabase.from("blog_posts").select(`
           *,
           profiles (
             full_name,
             avatar_url
           )
-        `)
-        .eq("id", id)
-        .maybeSingle();
+        `);
+      query = ref.kind === "id" ? query.eq("id", ref.id) : query.gte("id", ref.lower).lte("id", ref.upper);
+      const { data, error } = await query;
 
       if (error) throw error;
-      setPost(data as BlogPost);
+      const found = pickBySlug((data as BlogPost[]) ?? [], slug!) ?? null;
+      setPost(found);
+      // Old /blog/<uuid> links and renamed posts: show the canonical address.
+      if (found && blogPostUrl(found) !== `/blog/${slug}`) {
+        navigate(blogPostUrl(found), { replace: true });
+      }
     } catch (error) {
       toast({
         title: "Error loading post",
@@ -100,7 +109,7 @@ const BlogPost = () => {
       const { error } = await supabase
         .from("blog_posts")
         .delete()
-        .eq("id", id);
+        .eq("id", post!.id);
 
       if (error) throw error;
 
@@ -120,17 +129,8 @@ const BlogPost = () => {
 
   const canEdit = user && (isAdmin || post?.author_id === user.id);
 
-  // Set dynamic page title and meta description - hooks must be called unconditionally
-  usePageTitle(post ? `${post.title} | Cyber Dhators Blog` : "Loading... | Cyber Dhators Blog");
-  useMetaDescription(post ? (post.excerpt || post.content.substring(0, 160)) : "Loading blog post...");
-  useStructuredData(post ? {
-    title: post.title,
-    description: post.excerpt || post.content.substring(0, 160),
-    author: post.profiles?.full_name || "Cyber Dhators",
-    datePublished: post.created_at,
-    dateModified: post.created_at,
-    url: `https://cyberdhators.codes/blog/${id}`,
-  } : null);
+  // Hooks must be called unconditionally
+  usePageSEO(post ? blogPostMeta(post) : null);
 
   if (isLoading) {
     return (
@@ -182,7 +182,7 @@ const BlogPost = () => {
               <div className="flex gap-2">
                 <Button
                   variant="outline"
-                  onClick={() => navigate(`/blog/edit/${id}`)}
+                  onClick={() => navigate(`/blog/edit/${post.id}`)}
                 >
                   <Edit className="mr-2 h-4 w-4" />
                   Edit

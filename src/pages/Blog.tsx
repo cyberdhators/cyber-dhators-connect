@@ -7,8 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { supabase } from "@/integrations/supabase/client";
 import { Calendar, User, Edit, Plus, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import usePageTitle from "@/hooks/usePageTitle";
-import useMetaDescription from "@/hooks/useMetaDescription";
+import { usePublicPageSEO } from "@/hooks/usePageSEO";
+import { blogPostUrl } from "@/seo/meta";
 import { getErrorMessage } from "@/lib/utils";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import {
@@ -39,8 +39,7 @@ interface BlogPost {
 }
 
 const Blog = () => {
-  usePageTitle("Blog | Cyber Dhators - Cybersecurity Insights & Articles");
-  useMetaDescription("Read our latest blog posts on cybersecurity, technology trends, and digital security solutions. Expert insights from Cyber Dhators team for African businesses.");
+  usePublicPageSEO("/blog");
   
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -189,7 +188,7 @@ const Blog = () => {
                     </div>
                     
                     <Button asChild variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground mb-2">
-                      <Link to={`/blog/${post.id}`}>Read More</Link>
+                      <Link to={blogPostUrl(post)}>Read More</Link>
                     </Button>
                     
                     {canEditPost(post) && (

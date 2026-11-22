@@ -4,7 +4,8 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import useProductSEO from "@/hooks/useProductSEO";
+import usePageSEO from "@/hooks/usePageSEO";
+import { notFoundMeta, productMeta } from "@/seo/meta";
 import ProductBreadcrumb from "@/components/products/ProductBreadcrumb";
 import ProductHero from "@/components/products/ProductHero";
 import FeatureGrid from "@/components/products/FeatureGrid";
@@ -29,7 +30,7 @@ const ProductDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const product = getProductBySlug(slug ?? "");
 
-  useProductSEO(product);
+  usePageSEO(product ? productMeta(product) : notFoundMeta);
 
   if (!product) {
     return (

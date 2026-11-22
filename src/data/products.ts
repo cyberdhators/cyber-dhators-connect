@@ -18,7 +18,7 @@ import {
   Smartphone,
   Lock,
 } from "lucide-react";
-import type { Product, ProductCategory, SortOption } from "@/types/product";
+import type { Product, ProductCategory, SortOption } from "../types/product";
 
 export const CATEGORY_LABELS: Record<"all" | ProductCategory, string> = {
   all: "All",

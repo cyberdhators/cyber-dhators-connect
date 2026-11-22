@@ -3,8 +3,7 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Star } from "lucide-react";
-import usePageTitle from "@/hooks/usePageTitle";
-import useMetaDescription from "@/hooks/useMetaDescription";
+import { usePublicPageSEO } from "@/hooks/usePageSEO";
 import gardinerLogo from "@/assets/gardiner-consulting.webp.asset.json";
 import marylandLogo from "@/assets/maryland-county-association-minnesota.webp.asset.json";
 import idwpLogo from "@/assets/international-development-water-project.webp.asset.json";
@@ -66,10 +65,7 @@ const organizations: OrganizationSpotlight[] = [
 ];
 
 const Testimonials = () => {
-  usePageTitle("Testimonials | Cyber Dhators");
-  useMetaDescription(
-    "Read what organizations like Gardiner Consulting Services, MCAM, IDWP, CORWADO, and Our Lady of Fatima Alumni Association say about working with Cyber Dhators."
-  );
+  usePublicPageSEO("/testimonials");
 
   return (
     <div className="min-h-screen bg-background">
