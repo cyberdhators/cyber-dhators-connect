@@ -129,6 +129,19 @@ const Blog = () => {
     ),
   );
 
+  const topicCounts = new Map<string, number>();
+  posts.forEach((post) => {
+    const topic = post.category?.trim();
+    if (!topic) return;
+    topicCounts.set(topic, (topicCounts.get(topic) || 0) + 1);
+  });
+  const topics = [...topicCounts.entries()]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, 8)
+    .map(([topic]) => topic);
+
+  const isTopicActive = (topic: string) => searchTerm === topic.toLocaleLowerCase();
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -155,7 +168,7 @@ const Blog = () => {
             )}
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-6 mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-6 mb-5">
             <p className="text-sm text-muted-foreground" aria-live="polite">
               {isLoading ? "Loading articles…" : `${visiblePosts.length} ${visiblePosts.length === 1 ? "article" : "articles"}`}
             </p>
@@ -176,6 +189,39 @@ const Blog = () => {
               )}
             </div>
           </div>
+
+          {topics.length > 0 && (
+            <div className="mb-8 flex flex-wrap items-center gap-2">
+              <span className="mr-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Browse topics
+              </span>
+              {topics.map((topic) => (
+                <Button
+                  key={topic}
+                  type="button"
+                  size="sm"
+                  variant={isTopicActive(topic) ? "default" : "outline"}
+                  aria-pressed={isTopicActive(topic)}
+                  onClick={() => setSearch(isTopicActive(topic) ? "" : topic)}
+                  className="rounded-full text-xs"
+                >
+                  {topic}
+                </Button>
+              ))}
+              {search && (
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => setSearch("")}
+                  className="rounded-full text-xs text-muted-foreground"
+                >
+                  <X className="mr-1 h-3 w-3" />
+                  Clear
+                </Button>
+              )}
+            </div>
+          )}
 
           {/* Blog Posts Grid */}
           {isLoading ? (
