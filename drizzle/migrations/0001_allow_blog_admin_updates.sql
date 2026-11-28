@@ -1,0 +1,1 @@
+ALTER POLICY "Users can update their own blog posts" ON public.blog_posts TO authenticated USING ((SELECT auth.uid()) = author_id OR (SELECT public.has_role((SELECT auth.uid()), 'admin'::public.app_role))) WITH CHECK ((SELECT auth.uid()) = author_id OR (SELECT public.has_role((SELECT auth.uid()), 'admin'::public.app_role)));

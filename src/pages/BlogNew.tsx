@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { getErrorMessage } from "@/lib/utils";
+import { requireSavedRecord } from "@/lib/savedRecord";
 import { ArrowLeft, Upload, X } from "lucide-react";
 
 const BlogNew = () => {
@@ -153,15 +154,18 @@ const BlogNew = () => {
 
       if (id) {
         // Update existing post
-        const { error } = await supabase
+        const { data: savedPost, error } = await supabase
           .from("blog_posts")
           .update({
             ...formData,
             featured_image_url: featuredImageUrl,
           })
-          .eq("id", id);
+          .eq("id", id)
+          .select("id")
+          .single();
 
         if (error) throw error;
+        requireSavedRecord(savedPost);
 
         toast({
           title: "Success!",

@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { getErrorMessage } from "@/lib/utils";
+import { requireSavedRecord } from "@/lib/savedRecord";
 import { ArrowLeft, Upload, X } from "lucide-react";
 
 const ProjectNew = () => {
@@ -155,15 +156,18 @@ const ProjectNew = () => {
 
       if (id) {
         // Update existing project
-        const { error } = await supabase
+        const { data: savedProject, error } = await supabase
           .from("projects")
           .update({
             ...formData,
             thumbnail_url: thumbnailUrl,
           })
-          .eq("id", id);
+          .eq("id", id)
+          .select("id")
+          .single();
 
         if (error) throw error;
+        requireSavedRecord(savedProject);
 
         toast({
           title: "Success!",
