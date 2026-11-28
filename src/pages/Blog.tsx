@@ -196,8 +196,8 @@ const Blog = () => {
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {visiblePosts.map((post) => (
-                <Card key={post.id} className="group flex h-[480px] min-w-0 flex-col overflow-hidden rounded-lg hover:border-primary/50 transition-colors">
-                  <Link to={blogPostUrl(post)} aria-label={post.title} className="block h-48 shrink-0 overflow-hidden bg-muted">
+                <Card key={post.id} className="group flex h-[384px] min-w-0 flex-col overflow-hidden rounded-lg hover:border-primary/50 transition-colors">
+                  <Link to={blogPostUrl(post)} aria-label={post.title} className="block h-32 shrink-0 overflow-hidden bg-muted">
                     {post.featured_image_url ? (
                       <img
                         src={post.featured_image_url}
@@ -211,8 +211,8 @@ const Blog = () => {
                       </div>
                     )}
                   </Link>
-                  <CardHeader className="space-y-3 px-5 pt-5 pb-0">
-                    <div className="min-w-0 h-5 text-xs font-semibold uppercase text-primary">
+                  <CardHeader className="space-y-2 px-5 pt-4 pb-0">
+                    <div className="min-w-0 h-4 text-xs font-semibold uppercase text-primary">
                       <span className="block truncate" title={post.category || "General"}>
                         {post.category || "General"}
                       </span>
@@ -220,9 +220,9 @@ const Blog = () => {
                     <CardTitle className="h-14 text-lg leading-7 group-hover:text-primary transition-colors">
                       <Link to={blogPostUrl(post)} className="line-clamp-2 break-words" title={post.title}>{post.title}</Link>
                     </CardTitle>
-                    <CardDescription className="h-[60px] line-clamp-3 break-words text-sm leading-5">{post.excerpt}</CardDescription>
+                    <CardDescription className="h-10 line-clamp-2 break-words text-sm leading-5">{post.excerpt}</CardDescription>
                   </CardHeader>
-                  <CardContent className="mt-auto px-5 pt-4 pb-5">
+                  <CardContent className="mt-auto px-5 pt-3 pb-4">
                     <div className="flex items-center justify-between text-xs text-muted-foreground">
                       <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4" />

@@ -245,7 +245,7 @@ const BlogPost = () => {
           </div>
 
           {post.excerpt && (
-            <p className="text-xl text-muted-foreground mb-8 italic">
+            <p className="text-lg text-muted-foreground mb-8 italic line-clamp-3">
               {post.excerpt}
             </p>
           )}
